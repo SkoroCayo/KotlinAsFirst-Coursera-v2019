@@ -6,8 +6,11 @@ import lesson1.task1.sqr
 import kotlin.math.sqrt
 
 fun main(args: Array<String>) {
-    println(digitNumber(325))
-    println(fib(100))
+    //println(digitNumber(325))
+    //println(collatzSteps(15))
+    println(sqrt(26.toDouble()))
+    println(lcm(25, 49))
+    println(squareBetweenExists(21,28))
 }
 
 /**
@@ -90,10 +93,21 @@ fun fib(n: Int): Int = when (n) {
 /**
  * Простая
  *
+ * Для заданных чисел m и n найти наибольший общий делитель, то есть,
+ * наибольшее число k, которое делится и на m и на n без остатка
+ */
+fun gcd(m: Int, n: Int): Int = when (n) {
+    0 -> m
+    else -> gcd(n, m % n)
+}
+
+/**
+ * Простая
+ *
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int = m / gcd(m, n) * n
 
 /**
  * Простая
@@ -101,7 +115,10 @@ fun lcm(m: Int, n: Int): Int = TODO()
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    TODO()
+    for (i in 2..n / 2) {
+        return if (n % i == 0) i else continue
+    }
+    return n
 }
 
 /**
@@ -109,7 +126,12 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int {
+    for (i in n / 2 downTo 2) {
+        return if (n % i == 0) i else continue
+    }
+    return 2
+}
 
 /**
  * Простая
@@ -118,7 +140,7 @@ fun maxDivisor(n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean = (isPrime(m) && isPrime(n) && lcm(m, n) == 1)
 
 /**
  * Простая
@@ -127,7 +149,10 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    if (m <= n) for (k in m..n) if (sqrt(k.toDouble()) % 10 == 0.0 || (m == 1 && n == 1)) return true else continue else return false
+    return false
+}
 
 /**
  * Средняя
@@ -145,7 +170,15 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var iterationCount = 0
+    var result = x
+    while (result > 0 && result != 1) {
+        if (result % 2 == 0) result /= 2 else result = 3 * result + 1
+        iterationCount += 1
+    }
+    return iterationCount
+}
 
 /**
  * Средняя
