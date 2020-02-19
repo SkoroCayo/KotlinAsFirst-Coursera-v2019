@@ -3,14 +3,18 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
+import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.sqrt
+import kotlin.math.truncate
 
 fun main(args: Array<String>) {
-    //println(digitNumber(325))
-    //println(collatzSteps(15))
-    println(sqrt(26.toDouble()))
-    println(lcm(25, 49))
-    println(squareBetweenExists(21,28))
+    println(1323 % 10)
+    println(truncate(1323.0 / 1000))
+    //println(sin(3.0 * PI / 2.0, 1e-5))
+    println(revert(13478))
+    println("${5 % 10} == ${5 % 100 / 10}")
+    println(hasDifferentDigits(0))
 }
 
 /**
@@ -127,7 +131,7 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    for (i in n / 2 downTo 2) {
+    for (i in n / 2 downTo 1) {
         return if (n % i == 0) i else continue
     }
     return 2
@@ -140,7 +144,7 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = (isPrime(m) && isPrime(n) && lcm(m, n) == 1)
+fun isCoPrime(m: Int, n: Int): Boolean = (gcd(m, n) == 1)
 
 /**
  * Простая
@@ -150,7 +154,7 @@ fun isCoPrime(m: Int, n: Int): Boolean = (isPrime(m) && isPrime(n) && lcm(m, n) 
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    if (m <= n) for (k in m..n) if (sqrt(k.toDouble()) % 10 == 0.0 || (m == 1 && n == 1)) return true else continue else return false
+    if (m <= n) for (k in m..n) if (sqrt(k.toDouble()) == truncate(sqrt(k.toDouble())) || (m == 1 && n == 1)) return true else continue else return false
     return false
 }
 
@@ -189,7 +193,17 @@ fun collatzSteps(x: Int): Int {
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    var p = x
+    var s = x
+    var n = 2
+    while (abs(p) > eps) {
+        p = -p * x * x / (n * (n + 1))
+        s += p
+        n += 2
+    }
+    return s
+}
 
 /**
  * Средняя
@@ -209,7 +223,16 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var result = 0
+    var inputValue = n
+    while (inputValue > 0) {
+        result = result * 10 + inputValue % 10
+        inputValue /= 10
+    }
+    return result
+}
+
 
 /**
  * Средняя
@@ -220,7 +243,7 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean = (n == revert(n))
 
 /**
  * Средняя
@@ -230,7 +253,11 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean = when {
+    n in 0..9 -> false
+    n % 10 != n % 100 / 10 -> true
+    else -> hasDifferentDigits(n / 10)
+}
 
 /**
  * Сложная
