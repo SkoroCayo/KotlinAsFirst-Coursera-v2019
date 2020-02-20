@@ -9,7 +9,10 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 fun main(args: Array<String>) {
-    println(accumulate(arrayListOf(1, 2, 3, 4)))
+    //println(accumulate(arrayListOf(1, 2, 3, 4)))
+    //println(convertToString(250, 14))
+    //println(decimal(listOf(1, 3, 12), 14))
+    println(decimalFromString("13c", 14))
 }
 
 /**
@@ -238,7 +241,10 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String {TODO()}
+fun convertToString(n: Int, base: Int): String =
+    convert(n, base).joinToString(separator = "") {
+        "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"[it].toString().toLowerCase()
+    }
 
 /**
  * Средняя
@@ -247,7 +253,8 @@ fun convertToString(n: Int, base: Int): String {TODO()}
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int =
+    digits.asReversed().mapIndexed { index, it -> it * pow(base.toDouble(), index.toDouble()).toInt() }.sum()
 
 /**
  * Сложная
@@ -259,9 +266,12 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Например: str = "13c", base = 14 -> 250
  *
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
+ *
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int = decimal(
+    str.toMutableList().map { "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".toLowerCase().indexOf(it.toChar()) }.toList(), base
+)
 
 /**
  * Сложная

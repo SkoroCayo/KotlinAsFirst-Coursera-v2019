@@ -3,6 +3,7 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
+import java.lang.Math.pow
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.sqrt
@@ -15,6 +16,7 @@ fun main(args: Array<String>) {
     println(revert(13478))
     println("${5 % 10} == ${5 % 100 / 10}")
     println(hasDifferentDigits(0))
+    println(PI * 100)
 }
 
 /**
@@ -198,6 +200,7 @@ fun sin(x: Double, eps: Double): Double {
     var s = x
     var n = 2
     while (abs(p) > eps) {
+        //p = pow(-1.0, n.toDouble()) * pow(x, 2.0 * n.toDouble() + 1.0) * x / factorial(2 * n + 1)
         p = -p * x * x / (n * (n + 1))
         s += p
         n += 2
@@ -214,7 +217,9 @@ fun sin(x: Double, eps: Double): Double {
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    TODO()
+}
 
 /**
  * Средняя
@@ -268,7 +273,9 @@ fun hasDifferentDigits(n: Int): Boolean = when {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    TODO()
+}
 
 /**
  * Сложная
