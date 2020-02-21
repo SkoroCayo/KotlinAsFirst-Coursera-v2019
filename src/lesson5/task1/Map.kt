@@ -2,6 +2,17 @@
 
 package lesson5.task1
 
+import lesson4.task1.decimalFromString
+
+fun main(args: Array<String>) {
+    //println(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5).values.distinct().sortedDescending())
+    //println(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5).filterValues { it == 5 }.keys)
+    //println(buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5)))
+    //println(mapOf("a" to "z", "b" to "sweet").to)
+    //    .retainAll(mapOf("a" to "z").entries)
+    println(containsIn(mapOf("b" to "sweet"), mapOf("a" to "z", "b" to "sweet")))
+}
+
 /**
  * Пример
  *
@@ -91,7 +102,13 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
+    var resultMap = mutableMapOf<Int, List<String>>()
+    for (grade in grades.values.distinct().sortedDescending()) {
+        resultMap[grade] = grades.filterValues { it == grade }.keys.toList()
+    }
+    return resultMap
+}
 
 /**
  * Простая
@@ -103,7 +120,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = b.entries - a.entries + a.entries == b.entries
 
 /**
  * Простая
@@ -119,7 +136,10 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TODO()
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
+    //a[] = mutableSetOf(*(a.entries - b.entries))
+
+}
 
 /**
  * Простая
@@ -128,7 +148,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TO
  * В выходном списке не должно быть повторяюихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.distinct()
 
 /**
  * Средняя
