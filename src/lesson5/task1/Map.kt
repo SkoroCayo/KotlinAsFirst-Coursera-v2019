@@ -5,22 +5,11 @@ package lesson5.task1
 import lesson4.task1.decimalFromString
 
 fun main(args: Array<String>) {
-    //println(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5).values.distinct().sortedDescending())
-    //println(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5).filterValues { it == 5 }.keys)
-    //println(buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5)))
-    //println(mapOf("a" to "z", "b" to "sweet").to)
-    //    .retainAll(mapOf("a" to "z").entries)
-    //println(containsIn(mapOf("b" to "sweet"), mapOf("a" to "z", "b" to "sweet")))
-    println(
-        setOf(
-            mapOf("Emergency" to "112", "Police" to "02"),
-            mapOf("Emergency" to "911", "Police" to "02")
-        )
-    )
-    //println(canBuildFrom(listOf('a', 'b', 'o'), "baobab"))
-    //println("baobab".toSortedSet())
-    val listEx = listOf("a", "b", "a")
-    //println(listEx.distinct()[key] =
+    val a = mutableMapOf("a" to "z")
+    var b = mapOf("a" to "z")
+
+    print((a.entries + b.entries))
+    //listOf("a", "b", "a") -> mapOf("a" to 2)
 
 }
 
@@ -147,11 +136,7 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = b.entr
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
-    //a[] = mutableSetOf(*(a.entries - b.entries))
-
-}
-
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TODO()
 /**
  * Простая
  *
@@ -235,7 +220,8 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = chars.toSortedSet()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> =
+    list.map { it to 1 }.groupBy({ it.first }, { it.second }).mapValues { it.value.sum() }.filter { it.value > 1 }
 
 /**
  * Средняя
@@ -246,7 +232,8 @@ fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean = TODO()
+fun hasAnagrams(words: List<String>): Boolean =
+    words.map { it.toSortedSet() }.distinct() != words.map { it.toSortedSet() }
 
 /**
  * Сложная
