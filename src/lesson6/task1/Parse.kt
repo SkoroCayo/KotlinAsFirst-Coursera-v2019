@@ -6,7 +6,12 @@ import lesson2.task2.daysInMonth
 import kotlin.NumberFormatException
 
 fun main(args: Array<String>) {
-    println(dateStrToDigit("3 мартобря 1918"))
+    //println(dateStrToDigit("29 февраля 1993"))
+    //println(daysInMonth( 2, 1993))
+    //println(bestLongJump("700 + 700"))
+    //println("700 + 700".split(" ").filter { it.toIntOrNull() != null }.tomax)
+    println(bestHighJump("220 + 224 %+ 228 %- 230 + 232 %%- 234 %"))
+
 }
 
 /**
@@ -94,10 +99,11 @@ fun dateStrToDigit(str: String): String {
 
     return try {
         val strDate = str.split(" ")
-        if (daysInMonth(
-                listOfMonths.indexOf(strDate[1]),
+        if (strDate.size == 3 && listOfMonths.indexOf(strDate[1]) != -1 &&
+            daysInMonth(
+                listOfMonths.indexOf(strDate[1]) + 1,
                 strDate[2].toInt()
-            ) >= strDate[0].toInt() && listOfMonths.indexOf(strDate[1]) != -1 && strDate.size == 3
+            ) >= strDate[0].toInt()
         ) String.format("%02d.%02d.%d", strDate[0].toInt(), listOfMonths.indexOf(strDate[1]) + 1, strDate[2].toInt())
         else ""
     } catch (e: NumberFormatException) {
@@ -115,7 +121,32 @@ fun dateStrToDigit(str: String): String {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val listOfMonths = listOf(
+        "января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря"
+    )
+
+    return try {
+        val strDate = digital.split(".")
+        if (strDate.size == 3 && strDate[1].toInt() in 1..12 &&
+            daysInMonth(strDate[1].toInt(), strDate[2].toInt()) >= strDate[0].toInt()
+        ) String.format("%d %s %d", strDate[0].toInt(), listOfMonths[strDate[1].toInt() - 1], strDate[2].toInt())
+        else ""
+    } catch (e: NumberFormatException) {
+        ""
+    }
+}
 
 /**
  * Средняя
@@ -131,7 +162,9 @@ fun dateDigitToStr(digital: String): String = TODO()
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    TODO()
+}
 
 /**
  * Средняя
@@ -143,7 +176,16 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int? {
+    val listOfResults = jumps.split(" ")
+    return try {
+        if (listOfResults.all { it == "-" || it == "%" || it.toIntOrNull() != null }) {
+            listOfResults.map { it.toIntOrNull() ?: -1 }.max()?.toInt()
+        } else -1
+    } catch (e: NumberFormatException) {
+        -1
+    }
+}
 
 /**
  * Сложная
@@ -156,7 +198,17 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int? {
+    val listOfResults = jumps.split(" ")//.mapNotNull { it.toIntOrNull() }
+    println(listOfResults)
+    return try {
+        if (listOfResults.all { it.contains(Regex("[+%-]")) || it.toIntOrNull() != null }) {
+            listOfResults.map { it.toIntOrNull() ?: -1 }.max()?.toInt()
+        } else -1
+    } catch (e: NumberFormatException) {
+        -1
+    }
+}
 
 /**
  * Сложная
