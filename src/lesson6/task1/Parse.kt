@@ -2,6 +2,13 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+import kotlin.NumberFormatException
+
+fun main(args: Array<String>) {
+    println(dateStrToDigit("3 мартобря 1918"))
+}
+
 /**
  * Пример
  *
@@ -69,7 +76,34 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val listOfMonths = listOf(
+        "января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря"
+    )
+
+    return try {
+        val strDate = str.split(" ")
+        if (daysInMonth(
+                listOfMonths.indexOf(strDate[1]),
+                strDate[2].toInt()
+            ) >= strDate[0].toInt() && listOfMonths.indexOf(strDate[1]) != -1 && strDate.size == 3
+        ) String.format("%02d.%02d.%d", strDate[0].toInt(), listOfMonths.indexOf(strDate[1]) + 1, strDate[2].toInt())
+        else ""
+    } catch (e: NumberFormatException) {
+        ""
+    }
+}
 
 /**
  * Средняя
