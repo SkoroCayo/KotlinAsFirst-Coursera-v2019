@@ -10,7 +10,9 @@ fun main(args: Array<String>) {
     //println(daysInMonth( 2, 1993))
     //println(bestLongJump("700 + 700"))
     //println("700 + 700".split(" ").filter { it.toIntOrNull() != null }.tomax)
-    println(bestHighJump("220 + 224 %+ 228 %- 230 + 232 %%- 234 %"))
+    //println(bestHighJump("220 + 224 %+ 228 %- 230 + 232 %%- 234 %"))
+    println(plusMinus("2 + 31 - 40 + 13"))
+    println(mostExpensive("Хлеб 39.9; Молоко 62.5; Курица 184.0; Конфеты 89.9"))
 
 }
 
@@ -199,11 +201,14 @@ fun bestLongJump(jumps: String): Int? {
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int? {
-    val listOfResults = jumps.split(" ")//.mapNotNull { it.toIntOrNull() }
-    println(listOfResults)
+    val listOfResults = jumps.split(" ")
     return try {
         if (listOfResults.all { it.contains(Regex("[+%-]")) || it.toIntOrNull() != null }) {
-            listOfResults.map { it.toIntOrNull() ?: -1 }.max()?.toInt()
+            val listOfValue = listOfResults.slice(listOfResults.indices step 2)
+            val listOfAttempt = listOfResults.slice(1 until listOfResults.size step 2)
+            return if (listOfValue.size == listOfAttempt.size) {
+                listOfValue.zip(listOfAttempt).filter { it.second.contains("+") }.maxBy { it.first }?.first?.toInt()
+            } else -1
         } else -1
     } catch (e: NumberFormatException) {
         -1
@@ -219,7 +224,25 @@ fun bestHighJump(jumps: String): Int? {
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    val expressionList = expression.split(" ")
+    val numbersList = expressionList.slice(expressionList.indices step 2)
+    val operatorsList = expressionList.slice(1 until expressionList.size step 2)
+    if (expressionList.all { it.contains(Regex("[+-]")) || it.toIntOrNull() != null }
+        && numbersList.all { it.toIntOrNull() != null }
+        && operatorsList.all { it.contains(Regex("[+-]")) }
+    ) {
+        var s = numbersList[0].toInt()
+        operatorsList.forEachIndexed { index, symbol ->
+            when (symbol) {
+                "+" -> s += numbersList[index + 1].toInt()
+                "-" -> s -= numbersList[index + 1].toInt()
+            }
+        }
+        return s
+    } else throw IllegalArgumentException()
+    //throw IllegalArgumentException("Exception")
+}
 
 /**
  * Сложная
@@ -243,7 +266,12 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String? {
+    return if (description.isNotEmpty()) {
+        var descMap = description.split(";").map { it.trim().split(" ")[0] to it.trim().split(" ")[1] }
+        descMap.maxBy { it.second.toDouble() }?.first
+    } else ""
+}
 
 /**
  * Сложная
